@@ -48,6 +48,7 @@ app.post(
           { input: resizedImage },
           { input: "./assets/frames/frame1.png" },
         ])
+        .png()
         .toBuffer();
 
       // send the processed image back to frontend
