@@ -24,10 +24,14 @@ app.post(
 
     try {
       // resize the received image to fit in the frame
-      const metadata = await sharp("./assets/frames/frame1.png").metadata();
-      const resizeWidth: number = metadata.width ? metadata.width * 0.66 : 800;
+      const metadata = await sharp(
+        `./assets/frames/${req.body.frame}.png`
+      ).metadata();
+      const resizeWidth: number = metadata.width
+        ? Math.round(metadata.width * 0.66)
+        : 800;
       const resizeHeight: number = metadata.height
-        ? metadata.height * 0.66
+        ? Math.round(metadata.height * 0.66)
         : 1000;
 
       const resizedImage = await sharp(req.file.buffer)
@@ -46,7 +50,7 @@ app.post(
       const combinedImage = await sharp(resizedBackgroud)
         .composite([
           { input: resizedImage },
-          { input: "./assets/frames/frame1.png" },
+          { input: `./assets/frames/${req.body.frame}.png` },
         ])
         .png()
         .toBuffer();
